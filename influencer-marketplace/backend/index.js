@@ -1,18 +1,30 @@
-const express = require('express');
 const connectDB = require('./config/db');
-const influencerRoutes = require('./routes/influencerRoutes');
 
-const app = express();
-
-// Connect to database
+// Connect to the database
 connectDB();
 
-// Body parser middleware
-app.use(express.json({ extended: false }));
+const express = require('express');
+const app = express();
+const authRoutes = require('./routes/auth');
+const influencerRoutes = require('./routes/influencers');
+const clientRoutes = require('./routes/clients');
+const paymentRoutes = require('./routes/payments');
 
-// Mount routes
+// Middleware
+app.use(express.json());
+
+// Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/influencers', influencerRoutes);
+app.use('/api/clients', clientRoutes);
+app.use('/api/payments', paymentRoutes);
 
-const PORT = process.env.PORT || 5000;
+// Error Handling Middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
+});
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Start Server
+const PORT = 5000;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

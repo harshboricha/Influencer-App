@@ -77,3 +77,16 @@ exports.deleteInfluencer = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+exports.listInfluencers = (req, res) => {
+  // Logic to fetch influencers from the database
+  res.status(200).json([{ id: 1, name: 'Influencer1' }]);
+};
+
+exports.addInfluencer = (req, res) => {
+  const { name, niche } = req.body;
+  if (!name || !niche) {
+    return res.status(400).json({ message: 'Name and niche are required' });
+  }
+  // Logic to add influencer to the database
+  res.status(201).json({ message: 'Influencer added successfully' });
+};
